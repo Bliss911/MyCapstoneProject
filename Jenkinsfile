@@ -1,13 +1,12 @@
 pipeline {
-environment {
-    dockerImage = ''
-}
 	agent any
 	stages {
-		stage('Dockerfile linting') {
-		    steps {
-		        sh 'make lint'
-            }
+
+		stage('Linting') {
+			steps {
+				sh 'tidy -q -e *.html'
+			}
 		}
 	}
 }
+		

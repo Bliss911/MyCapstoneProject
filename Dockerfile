@@ -1,13 +1,8 @@
-FROM python:3.7-alpine
+FROM nginx
 
-COPY . /app
+## Step 1:
+RUN rm /usr/share/nginx/html/index.html
 
-WORKDIR /app
-
-
-RUN python -m pip install --upgrade pip &&\
-    pip install --trusted-host pypi.python.org -r requirements.txt
-
-EXPOSE 9000
-
-CMD ["python3", "app.py"]
+## Step 2:
+# Copy source code to working directory
+COPY index.html /usr/share/nginx/html
