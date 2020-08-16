@@ -32,6 +32,17 @@ environment {
 				}
 			}
 		}
+		stage('Set current kubectl context') {
+			steps {
+				withAWS(region:'eu-central-1', credentials:'AWSJenkins') {
+					sh '''
+						sudo -s
+                        sudo kubectl config get-contexts
+						sudo kubectl config use-context arn:aws:eks:eu-central-1:842187592768:cluster/capstonehello
+					'''
+				}
+			}
+		}
 	}
 }
 		
