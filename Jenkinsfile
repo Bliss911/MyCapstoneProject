@@ -39,7 +39,7 @@ environment {
         }
         stage('Update Kube Config'){
             steps {
-                withAWS(region:'us-west-2',credentials:'Jenkins User') {
+                withAWS(region:'us-west-2',credentials:'MyJenkins') {
                     sh 'sudo aws eks --region us-west-2 update-kubeconfig --name udacity-project'
                 }
             }
