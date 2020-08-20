@@ -32,17 +32,27 @@ environment {
 				}
 			}
 		}
-		stage('Set current kubectl context') {
-			steps {
-				withAWS(region:'us-west-2', credentials:'AWSJenkins') {
-					sh '''
-						sudo -s
-                        sudo kubectl config get-contexts
-						sudo kubectl config use-context arn:aws:eks:us-west-2:669572812813:cluster/capstonehello
-					'''
-				}
-			}
-		}
+		stage('Remove Unused docker image') {
+            steps{
+                sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
+        stage('Update Kube Config'){
+            steps {
+                withAWS(region:'us-west-2',credentials:'aws') {
+                    sh 'sudo aws eks --region us-west-2 update-kubeconfig --name udacity-project'
+                }
+            }
+        }
+		stage('Deploy Updated Image to Cluster'){
+            steps {
+                sh '''
+                    export IMAGE="$registry:$BUILD_NUMBER"
+                    sed -ie "s~IMAGE~$IMAGE~g" kubernetes/container.yml
+                    sudo kubectl apply -f ./kubernetes
+                    '''
+            }
+        }
 	}
 }
 		
