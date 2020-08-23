@@ -27,22 +27,22 @@ environment {
                 sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
-        // stage('Update Kube Config'){
-        //     steps {
-        //         withAWS(region:'us-west-2',credentials:'aws') {
-        //             sh 'sudo aws eks --region us-west-2 update-kubeconfig --name udacity-project'
-        //         }
-        //     }
-        // }
-		// stage('Deploy Updated Image to Cluster'){
-        //     steps {
-        //         sh '''
-        //             export IMAGE="$registry:$BUILD_NUMBER"
-        //             sed -ie "s~IMAGE~$IMAGE~g" kubernetes/container.yml
-        //             sudo kubectl apply -f ./kubernetes
-        //             '''
-        //     }
-        // }
+        stage('Update Kube Config'){
+            steps {
+                withAWS(region:'us-west-2',credentials:'MyJenkins') {
+                    sh 'sudo aws eks --region us-west-2 update-kubeconfig --name capstone-hello'
+                }
+            }
+        }
+		stage('Deploy Updated Image to Cluster'){
+            steps {
+                sh '''
+                    export IMAGE="$registry:$BUILD_NUMBER"
+                    sed -ie "s~IMAGE~$IMAGE~g" configuration/config.yml
+                    sudo kubectl apply -f ./configuration
+                    '''
+            }
+        }
 	}
 }
 		
