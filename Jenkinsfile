@@ -28,9 +28,9 @@ environment {
             }
         }
         stage('Update Kube Config'){
-            steps {
+            steps{
                 withAWS(region:'us-west-2',credentials:'MyJenkins') {
-                    sh 'sudo aws eks --region us-west-2 update-kubeconfig --name capstone-hello'
+                    sh "sudo aws eks --region us-west-2 update-kubeconfig --name capstone-hello"
                 }
             }
         }
