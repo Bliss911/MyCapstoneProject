@@ -6,6 +6,9 @@ environment {
 }
 	agent any
 	stages {
+        stage{
+            sh 'make lint'
+        }
 		stage('Building our image') {
 			steps{
 				script {
